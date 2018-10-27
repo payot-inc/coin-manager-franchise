@@ -1,9 +1,5 @@
-import Vue from 'vue';
-import Router from 'vue-router';
-import store from './store';
-import _ from 'lodash';
-
 import Root from '@/views/Root.vue';
+import NotFound from '@/views/NotFound.vue';
 
 import Login from '@/views/Login.vue';
 import Page1 from '@/views/NowMonth.vue';
@@ -12,26 +8,29 @@ import Page3 from '@/views/CompanyAdd.vue';
 import Page4 from '@/views/PointManagement.vue';
 import Page5 from '@/views/SalesInfo.vue';
 
-Vue.use(Router)
+import Vue from 'vue';
+import Router from 'vue-router';
+import store from './store';
 
-const requireAuth = () => (from, to, next) => {
-  const isAuth = true;
-  if (isAuth) return next();
-  else next('/');
+Vue.use(Router);
+
+const requireAuth = (from, to, next) => {
+  if (!_.isEmpty(store.state.franchise)) return next();
+  next('/');
 };
 
 export default new Router({
+  mode: 'history',
   routes: [
     {
       path: '/',
       name: 'login',
       component: Login,
-      redirect: '/franchise'
     },
     {
       path: '/franchise',
       name: 'franchise',
-      beforeEnter: requireAuth(),
+      beforeEnter: requireAuth,
       redirect: '/franchise/now',
       component: Root,
       children: [
@@ -39,8 +38,13 @@ export default new Router({
         { path: '/franchise/list', component: Page2 },
         { path: '/franchise/add', component: Page3 },
         { path: '/franchise/point', component: Page4 },
-        { path: '/franchise/sales', component: Page5 }
-      ]
-    }
-  ]
-})
+        { path: '/franchise/sales', component: Page5 },
+      ],
+    },
+    {
+      path: '*',
+      name: 'notfound',
+      component: NotFound,
+    },
+  ],
+});
