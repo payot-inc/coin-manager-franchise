@@ -1,7 +1,7 @@
-import api from './api';
-
 import Vue from 'vue';
 import Vuex from 'vuex';
+
+import api from './api';
 
 Vue.use(Vuex);
 
@@ -19,16 +19,11 @@ export default new Vuex.Store({
   },
   mutations: {
     setFranchise(state, franchise) {
-      console.log(franchise);
-      state.franchise = franchise;
-    },
+      const f = _.clone(franchise);
+      delete f.companies;
 
-    setCompanys(state, companys) {
-      state.companys = companys;
-    },
-
-    addCompanys(state, company) {
-      state.companys.push(company);
+      state.franchise = f;
+      state.companys = franchise.companies;
     },
 
     logout(state) {
@@ -39,7 +34,7 @@ export default new Vuex.Store({
   actions: {
     login({ commit }, { email, password }) {
       return api.login(email, password).then((franchise) => {
-        commit('setFranchise', franchise);
+        commit('setFranchise', franchise.data);
 
         return franchise;
       });
@@ -49,19 +44,19 @@ export default new Vuex.Store({
       if (state.franchise.hsOwnProperty('id')) Error('로그인이 필요합니다');
       return api
         .signUpCompany(state.franchise.id, company, owner, machines)
-        .then(([c, o, m]) => {
-          const signCompany = _.clone(c);
-          signCompany.owner = o;
-          signCompany.machines = m;
+        .then(() => api.refreshFranchise(state.franchise.id));
+    },
 
-          commit('addCompany', signCompany);
+    salesFranchise({ commit, state }, { start, end }) {
+      const franchiseId = state.franchise.id;
 
-          return {
-            company: c,
-            owner: o,
-            machines: m,
-          };
-        });
+      const maintenances = api.getFranchiseMaintenances(franchiseId, start, end).catch(err => console.log(err.response.data));
+      const pay = api.getFranchiseSales(franchiseId, start, end).catch(err => console.log(err.response.data));
+
+      return Promise.all([maintenances, pay])
+        .then(([maintenance, payments]) => ({
+          maintenance: maintenance.data, payments: payments.data,
+        }));
     },
   },
 });

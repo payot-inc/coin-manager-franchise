@@ -524,7 +524,7 @@ export default {
         query: '',
         loading: false,
       },
-      companys: [],
+      companys: this.$store.state.companys,
       modal: {
         company: null,
         detail: false,
@@ -566,9 +566,6 @@ export default {
         ],
       },
     };
-  },
-  mounted() {
-    this.companys = this.$store.companys;
   },
   watch: {
     'search.query': function (newValue) {

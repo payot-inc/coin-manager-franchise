@@ -125,7 +125,31 @@ export default {
           { key: 2, text: '건조기' },
         ],
       },
+      response: {
+        maintenance: [],
+        payments: [],
+        scaningTime: new Date(),
+      },
     };
+  },
+  mounted() {
+    this.getSales(moment().add(-1, 'month').toDate(), new Date());
+  },
+  computed: {
+
+  },
+
+  methods: {
+    getSales(start, end) {
+      const self = this;
+
+      this.$store.dispatch('salesFranchies', { start, end })
+        .then((result) => {
+          self.response.maintenance = result.maintenance;
+          self.response.payments = result.payments;
+          self.response.scaningTime = new Date();
+        });
+    },
   },
 };
 </script>

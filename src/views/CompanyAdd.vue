@@ -29,14 +29,6 @@
                                 비밀번호는 4자이상 필수입력사항입니다
                             </span>
                         </div>
-                        <div class="field">
-                            <label>비밀번호 확인</label>
-                            <sui-input v-validate="{ required: true, confirmed: 'password' }" data-vv-as="password" type="password" name="password_confirmation" placeholder="비밀번호 확인">
-                            </sui-input>
-                            <span v-show="errors.has('password_confirmation')">
-                                동일한 비밀번호를 입력해 주세요
-                            </span>
-                        </div>
                     </div>
                 </div>
             </section>
