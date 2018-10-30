@@ -51,7 +51,7 @@
                                 <td class="tel">{{ c.tel }}</td>
                                 <td class="address">{{ c.address }}</td>
                                 <td class="btns">
-                                    <sui-button @click="showDetailCompanyModal({})" animated="vertical">
+                                    <sui-button @click="showDetailCompanyModal(c)" animated="vertical">
                                         <sui-button-content hidden>상세</sui-button-content>
                                         <sui-button-content visible>
                                             <sui-icon name="clipboard outline" />
@@ -139,7 +139,7 @@
                                                 <dt>대표자</dt>
                                                 <sui-input
                                                     fluid
-                                                    :placeholder="selected.owner.name"
+                                                    :placeholder="selected.company.owner.name"
                                                     v-model="modal.update.owner.name"></sui-input>
                                             </dl>
                                         </div>
@@ -176,7 +176,7 @@
                                                 <dt>H.P</dt>
                                                 <sui-input
                                                     fluid
-                                                    :placeholder="selected.owner.phone"
+                                                    :placeholder="selected.company.owner.phone"
                                                     v-model="modal.update.owner.phone">
                                                 </sui-input>
                                             </dl>
@@ -186,7 +186,7 @@
                                                 <dt>전화번호</dt>
                                                 <sui-input
                                                     fluid
-                                                    :placeholder="selected.owner.tel"
+                                                    :placeholder="selected.company.tel"
                                                     v-model="modal.update.owner.tel">
                                                 </sui-input>
                                             </dl>
@@ -209,7 +209,7 @@
                                                 <dt>면적</dt>
                                                 <sui-input
                                                     fluid
-                                                    :placeholder="selected.company.size"
+                                                    :placeholder="selected.company.space"
                                                     v-model.number="modal.update.company.size">
                                                 </sui-input>
                                             </dl>
@@ -235,7 +235,7 @@
                                                 <dt>권리금</dt>
                                                 <sui-input
                                                     fluid
-                                                    :placeholder="selected.owner.premium"
+                                                    :placeholder="selected.company.owner.premium"
                                                     v-model.number="modal.update.owner.premium">
                                                 </sui-input>
                                             </dl>
@@ -245,7 +245,7 @@
                                                 <dt>보증금</dt>
                                                 <sui-input
                                                     fluid
-                                                    :placeholder="selected.owner.deposit"
+                                                    :placeholder="selected.company.owner.deposit"
                                                     v-model.number="modal.update.owner.deposit">
                                                 </sui-input>
                                             </dl>
@@ -255,7 +255,7 @@
                                                 <dt>장비투자금</dt>
                                                 <sui-input
                                                     fluid
-                                                    :placeholder="selected.owner.machinePrice"
+                                                    :placeholder="selected.company.owner.machinePrice"
                                                     v-model.number="modal.update.owner.machinePrice">
                                                 </sui-input>
                                             </dl>
@@ -265,7 +265,7 @@
                                                 <dt>시설 및 기타비용</dt>
                                                 <sui-input
                                                     fluid
-                                                    :placeholder="selected.owner.etc"
+                                                    :placeholder="selected.company.owner.etc"
                                                     v-model.number="modal.update.owner.etc">
                                                 </sui-input>
                                             </dl>
@@ -511,7 +511,6 @@
         </section>
     </div>
 </template>
-
 <script>
 export default {
   data() {
@@ -584,6 +583,7 @@ export default {
 
     showDetailCompanyModal(company) {
       this.modal.company = company;
+      this.selected.company = company;
       this.modal.detail = true;
     },
   },

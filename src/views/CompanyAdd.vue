@@ -15,7 +15,12 @@
                     <div class="four fields">
                         <div class="field">
                             <label>이메일</label>
-                            <sui-input name="email" data-vv-as="email" v-validate="{ required: true, email: true }" v-model="company.email" placeholder="이메일">
+                            <sui-input 
+                                name="email" 
+                                data-vv-as="email" 
+                                v-validate="{ required: true, email: true }" 
+                                v-model="company.email" 
+                                placeholder="이메일">
                             </sui-input>
                             <span v-show="errors.has('email')">
                                 이메일은 필수입력사항입니다
